@@ -11,8 +11,11 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Slipstream.h"
+#include "SlipstreamMovementComponent.h"
 
-ASlipstreamCharacter::ASlipstreamCharacter()
+ASlipstreamCharacter::ASlipstreamCharacter(const FObjectInitializer& ObjectInitializer)
+	// Tell ACharacter to create its movement component as our subclass instead of the default
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<USlipstreamMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -48,6 +51,11 @@ ASlipstreamCharacter::ASlipstreamCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+}
+
+USlipstreamMovementComponent* ASlipstreamCharacter::GetSlipstreamMovement() const
+{
+	return CastChecked<USlipstreamMovementComponent>(GetCharacterMovement());
 }
 
 void ASlipstreamCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

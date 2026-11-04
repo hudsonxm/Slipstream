@@ -10,6 +10,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
+class USlipstreamMovementComponent;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -51,8 +52,8 @@ protected:
 
 public:
 
-	/** Constructor */
-	ASlipstreamCharacter();	
+	/** Constructor. Takes an FObjectInitializer so we can swap in USlipstreamMovementComponent. */
+	ASlipstreamCharacter(const FObjectInitializer& ObjectInitializer);
 
 protected:
 
@@ -92,5 +93,9 @@ public:
 
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	/** Returns the movement component as our custom type (never null for this class) */
+	UFUNCTION(BlueprintPure, Category="Movement")
+	USlipstreamMovementComponent* GetSlipstreamMovement() const;
 };
 
